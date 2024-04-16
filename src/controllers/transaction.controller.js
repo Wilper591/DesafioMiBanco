@@ -15,13 +15,6 @@ const newTransaction = async (balanceDisc, idDisc, balanceAccre, idAccre) => {
     const valuesAccre = [balanceAccre, idAccre];
     const clientAccredit = await pool.query(accredit, valuesAccre);
 
-    console.log({
-      status: "Success",
-      message: "Transacción realizada con éxito.",
-      code: 200,
-      emisor: clientDiscount.rows[0],
-      receptor: clientAccredit.rows[0],
-    });
     return {
       status: "Success",
       message: "Transacción realizada con éxito.",
@@ -50,12 +43,6 @@ const newVoucher = async (comentario, saldo, origen, destino) => {
     const values = [comentario, saldo, origen, destino];
     const transactionSuccess = await pool.query(transaction, values);
 
-    console.log({
-      status: "Success",
-      message: "Registro realizado con éxito.",
-      code: 200,
-      emisor: transactionSuccess.rows[0],
-    });
     return {
       status: "Success",
       message: "Registro realizado con éxito.",
@@ -77,11 +64,12 @@ const newVoucher = async (comentario, saldo, origen, destino) => {
 /* Genera nueva transferencia y actualiza saldo de cuentas */
 const newTransactionVoucher = async (balance, idOut, idIn, comentario) => {
   try {
-    /* Inica la transacción */
+    /* Inicia la transacción */
     console.log("BEGIN START");
     await pool.query("BEGIN");
     const transaction = await newTransaction(balance, idOut, balance, idIn);
     const voucher = await newVoucher(comentario, balance, idOut, idIn);
+
     if (!transaction || !voucher) {
       const rollback = "ROLLBACK";
       await pool.query(rollback);
@@ -91,18 +79,22 @@ const newTransactionVoucher = async (balance, idOut, idIn, comentario) => {
         code: 500,
       });
     } else {
-      /* Finaliza transcción */
       console.log({
         status: "Success",
         message: "Operación realizada con éxito.",
         code: 200,
+        transaction: transaction,
+        voucher: voucher,
       });
+      /* Finaliza transcción */
       await pool.query("COMMIT");
       console.log("COMMIT END");
       return {
         status: "Success",
         message: "Operación realizada con éxito.",
         code: 200,
+        transaction: transaction,
+        voucher: voucher
       };
     }
   } catch (error) {
@@ -120,7 +112,7 @@ const newTransactionVoucher = async (balance, idOut, idIn, comentario) => {
 /* Consulta de saldo de un ID */
 const getBalanceAccount = async (id) => {
   try {
-    /* Inica la transacción */
+    /* Inicia la transacción */
     console.log("BEGIN START");
     await pool.query("BEGIN");
 
@@ -171,7 +163,7 @@ const getBalanceAccount = async (id) => {
 /* Consulta las ultimas 10 transacciones */
 const getTransactionRegister = async (cuentaOrigen) => {
   try {
-    /* Inica la transacción */
+    /* Inicia la transacción */
     console.log("BEGIN START");
     await pool.query("BEGIN");
 
@@ -195,7 +187,7 @@ const getTransactionRegister = async (cuentaOrigen) => {
         code: 500,
       };
     } else {
-      /* Seccess */
+      /* Success */
       console.log({
         status: "Success",
         message: "Consulta realizada con éxito.",
