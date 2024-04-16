@@ -75,27 +75,13 @@ const newVoucher = async (comentario, saldo, origen, destino) => {
 /* newVoucher("Compras", 1000, 1, 3); */
 
 /* Genera nueva transferencia y actualiza saldo de cuentas */
-const newTransactionVoucher = async (
-  balanceDisc,
-  idDisc,
-  balanceAccre,
-  idAccre,
-  comentario,
-  saldo,
-  origen,
-  destino
-) => {
+const newTransactionVoucher = async (balance, idOut, idIn, comentario) => {
   try {
     /* Inica la transacción */
     console.log("BEGIN START");
     await pool.query("BEGIN");
-    const transaction = await newTransaction(
-      balanceDisc,
-      idDisc,
-      balanceAccre,
-      idAccre
-    );
-    const voucher = await newVoucher(comentario, saldo, origen, destino);
+    const transaction = await newTransaction(balance, idOut, balance, idIn);
+    const voucher = await newVoucher(comentario, balance, idOut, idIn);
     if (!transaction || !voucher) {
       const rollback = "ROLLBACK";
       await pool.query(rollback);

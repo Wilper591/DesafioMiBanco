@@ -33,25 +33,12 @@ router.get("/register", async (req, res) => {
 // Ruta newTransactionVoucher
 router.post("/voucher", async (req, res) => {
   try {
-    const {
-      balanceDisc,
-      idDisc,
-      balanceAccre,
-      idAccre,
-      comentario,
-      saldo,
-      origen,
-      destino,
-    } = req.body;
+    const { saldo, idOut, idIn, comentario } = req.body;
     const newRegister = await newTransactionVoucher(
-      balanceDisc,
-      idDisc,
-      balanceAccre,
-      idAccre,
-      comentario,
       saldo,
-      origen,
-      destino
+      idOut,
+      idIn,
+      comentario
     );
     res.send(newRegister);
   } catch (error) {
