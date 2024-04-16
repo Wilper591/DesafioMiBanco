@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "name": "dia-6-opcional",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch ./src/app.js",
+    "prueba": "node ./src/controllers/transaction.controller.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "moment": "^2.30.1",
+    "pg": "^8.11.5"
+  }
+}
