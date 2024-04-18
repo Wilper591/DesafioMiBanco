@@ -1,4 +1,4 @@
-import { app, PORT } from "../index.js";
+import { app, PORT } from "./src/app.js";
 
 /* Se levanta el servidor */
 app.listen(PORT, () => {
